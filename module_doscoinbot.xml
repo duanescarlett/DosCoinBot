@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_doscoinbot" default="compile.module.doscoinbot">
+    <dirname property="module.doscoinbot.basedir" file="${ant.file.module_doscoinbot}"/>
+
+    <property name="module.jdk.home.doscoinbot" value="${project.jdk.home}"/>
+    <property name="module.jdk.bin.doscoinbot" value="${project.jdk.bin}"/>
+    <property name="module.jdk.classpath.doscoinbot" value="${project.jdk.classpath}"/>
+
+    <property name="compiler.args.doscoinbot" value="-encoding UTF-8 -source 1.8 -target 1.8 ${compiler.args}"/>
+
+    <property name="doscoinbot.output.dir" value="${module.doscoinbot.basedir}/out/production/DosCoinBot"/>
+    <property name="doscoinbot.testoutput.dir" value="${module.doscoinbot.basedir}/out/test/DosCoinBot"/>
+
+    <path id="doscoinbot.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="doscoinbot.module.production.classpath">
+        <path refid="${module.jdk.classpath.doscoinbot}"/>
+    </path>
+
+    <path id="doscoinbot.runtime.production.module.classpath">
+        <pathelement location="${doscoinbot.output.dir}"/>
+    </path>
+
+    <path id="doscoinbot.module.classpath">
+        <path refid="${module.jdk.classpath.doscoinbot}"/>
+        <pathelement location="${doscoinbot.output.dir}"/>
+    </path>
+
+    <path id="doscoinbot.runtime.module.classpath">
+        <pathelement location="${doscoinbot.testoutput.dir}"/>
+        <pathelement location="${doscoinbot.output.dir}"/>
+    </path>
+
+
+    <patternset id="excluded.from.module.doscoinbot">
+        <patternset refid="ignored.files"/>
+    </patternset>
+
+    <patternset id="excluded.from.compilation.doscoinbot">
+        <patternset refid="excluded.from.module.doscoinbot"/>
+    </patternset>
+
+    <path id="doscoinbot.module.sourcepath">
+        <dirset dir="${module.doscoinbot.basedir}">
+            <include name="src"/>
+        </dirset>
+    </path>
+
+
+    <target name="compile.module.doscoinbot"
+            depends="compile.module.doscoinbot.production,compile.module.doscoinbot.tests"
+            description="Compile module DosCoinBot"/>
+
+    <target name="compile.module.doscoinbot.production" depends="register.custom.compilers"
+            description="Compile module DosCoinBot; production classes">
+        <mkdir dir="${doscoinbot.output.dir}"/>
+        <javac2 destdir="${doscoinbot.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
+                memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.doscoinbot}/javac">
+            <compilerarg line="${compiler.args.doscoinbot}"/>
+            <bootclasspath refid="doscoinbot.module.bootclasspath"/>
+            <classpath refid="doscoinbot.module.production.classpath"/>
+            <src refid="doscoinbot.module.sourcepath"/>
+            <patternset refid="excluded.from.compilation.doscoinbot"/>
+        </javac2>
+
+        <copy todir="${doscoinbot.output.dir}">
+            <fileset dir="${module.doscoinbot.basedir}/src">
+                <patternset refid="compiler.resources"/>
+                <type type="file"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile.module.doscoinbot.tests"
+            depends="register.custom.compilers,compile.module.doscoinbot.production"
+            description="compile module DosCoinBot; test classes" unless="skip.tests"/>
+
+    <target name="clean.module.doscoinbot" description="cleanup module">
+        <delete dir="${doscoinbot.output.dir}"/>
+        <delete dir="${doscoinbot.testoutput.dir}"/>
+    </target>
+</project>
