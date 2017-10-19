@@ -33,9 +33,9 @@ public class Controller implements Initializable {
 
     public Controller() throws IOException {
         //this.main = new Main();
-        this.apiKey = "pff2PdwjlCC85lJCexfX1sG994";
-        this.userID = "up108137182";
-        this.secret = "m7UjviUGjz0m2YAsrXFYImmFAOI";
+        this.apiKey = "pff2Pdlkhudhjgdfasgfdj994";
+        this.userID = "khgugf";
+        this.secret = "oiyt7uy5et5rewstyt7yeyt";
         this.nonce = Integer.valueOf((int) (System.currentTimeMillis() / 1000));
         this.goButton = new Button();
         this.request = Request.getInstance();
